@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script defer src="/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>to do list</h1>
+      <form>
+        <input type="text" name="textInput" placeholder="Your task here" />
+
+        <template name="todoTemplate">
+          <div
+            class="todo"
+            name="todo"
+          >
+            <input type="checkbox" id='temp' name="checkbox" />
+            <label name="label" for='temp'></label>
+            <span class="delete" name="erase">&#x2715;</span>
+          </div>
+        </template>
+
+        <span id="progress" name="progress"></span>
+        <output id="todoList" name="todoList"> </output>
+      </form>
+    </div>
+  </body>
+</html>
