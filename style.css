@@ -1,9 +1,15 @@
 :root {
-  --dark-color: rgba(0, 0, 0, 0.7);
+  --color-white: white;
+  --color-bg: antiquewhite;
   --border-radius: 10px;
-  --main-color: rgb(233, 117, 35);
   --disabled-color: grey;
-  --striped-background : linear-gradient(45deg, transparent 49%, black 50%, transparent 51%);
+  --stripe-color: black;
+  --striped-background: linear-gradient(
+    45deg,
+    transparent 49%,
+    var(--stripe-color) 50%,
+    transparent 51%
+  );
 }
 
 body {
@@ -14,42 +20,39 @@ body {
   align-items: center;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-
   background: var(--striped-background);
-  background-color: antiquewhite;
+  background-color: var(--color-bg);
   background-size: 10px 10px;
 }
 
-.container {
-    margin: 0 35px 0 25px ;
+.todo {
+  margin: 0 35px 0 25px;
   position: relative;
   width: 400px;
   padding: 0 35px 35px 35px;
   border: 1px solid;
   border-radius: var(--border-radius);
-  background-color: white;
+  background-color: var(--color-white);
+  height: -moz-fit-content;
   height: fit-content;
   box-shadow: 15px 15px black;
 }
-
-.container > * {
+.todo > * {
   display: flex;
   flex-direction: column;
   gap: 25px;
 }
-
-h1 {
+.todo__title {
   color: antiquewhite;
   font-size: xxx-large;
-    margin: 25px   0;
+  margin: 25px 0;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   -webkit-text-stroke: 1px black;
 }
-
-input[type="text"] {
-    background-color: antiquewhite;
+.todo__input {
+  background-color: antiquewhite;
   height: 45px;
   border: 1px solid black;
   border-radius: var(--border-radius);
@@ -57,32 +60,28 @@ input[type="text"] {
   font-size: medium;
   font-family: inherit;
 }
-
-input[type="text"]:hover,
-input[type="text"]:focus-visible {
+.todo__input:hover,
+.todo__input:focus-visible {
   outline: none;
   box-shadow: inset 3px 3px black;
   padding: 3px 0 0 15px;
 }
-
-input:focus-visible::placeholder {
+.todo__input:hover::-moz-placeholder,
+.todo__input:focus-visible::-moz-placeholder {
   opacity: 0;
 }
-
-#todoList {
+.todo__input:hover::placeholder,
+.todo__input:focus-visible::placeholder {
+  opacity: 0;
 }
-
-.todo:last-child {
-  border-bottom-right-radius: var(--border-radius);
-  border-bottom-left-radius: var(--border-radius);
-  border-bottom-width: 1px;
+.todo__list {
+  background: var(--striped-background);
+  background-color: antiquewhite;
+  background-size: 10px 10px;
+  background-repeat: repeat;
+  border-radius: var(--border-radius);
 }
-.todo:first-child {
-  border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius);
-}
-
-.todo {
+.task {
   display: flex;
   font-size: small;
   gap: 10px;
@@ -91,28 +90,25 @@ input:focus-visible::placeholder {
   accent-color: black;
   border: 1px solid black;
   border-width: 1px 1px 0 1px;
+  background-color: white;
 }
-.todo:hover {
-  box-shadow: inset 3px 3px black;
-  background-color: antiquewhite;
+.task:first-child {
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
 }
-.todo:hover > * {
-  transform: translate(3px, 3px);
+.task:last-child {
+  border-bottom-right-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-width: 1px;
 }
-
-.todo:has(input[type="checkbox"]:checked) {
-  background: var(--striped-background);
-  background-color: antiquewhite  ;
-  background-size: 10px 10px;
-  background-repeat: repeat;
+.task:has(.task__done:checked) {
+  mix-blend-mode: multiply;
 }
-
-.todo > label {
+.task__content {
   word-wrap: break-word;
   flex-grow: 1;
 }
-
-.todo > span {
+.task__delete {
   display: flex;
   height: 1.2em;
   aspect-ratio: 1/1;
@@ -121,17 +117,24 @@ input:focus-visible::placeholder {
   align-items: center;
   border: transparent solid;
   opacity: 0;
+  cursor: pointer;
 }
-.todo:hover > span {
+.task:hover {
+  box-shadow: inset 3px 3px black;
+  background-color: antiquewhite;
+}
+.task:hover > * {
+  transform: translate(3px, 3px);
+}
+.task:hover .task__delete {
   opacity: 1;
 }
-.todo span:hover {
+.task__delete:hover {
   cursor: pointer;
   color: white;
   background-color: black;
 }
-
-#progress {
+.todo__progress {
   position: absolute;
   right: 35px;
   top: 35px;
@@ -139,7 +142,6 @@ input:focus-visible::placeholder {
   font-weight: bolder;
   font-size: small;
 }
-
-#progress:empty + #todoList {
-    display: none;
-}
+.todo__progress:empty + #todoList {
+  display: none;
+} /*# sourceMappingURL=style.css.map */
