@@ -10,17 +10,22 @@
   <body>
     <div class="todo">
       <h1 class="todo__title">to do list</h1>
-      <form>
+      <form class="todo__main">
         <input
           class="todo__input"
           type="text"
           name="textInput"
-          placeholder="Your task here"
+          placeholder="Your task here..."
         />
 
         <template name="todoTemplate">
           <div class="task" name="todo">
-            <input class="task__done" type="checkbox" id="temp" name="checkbox" />
+            <input
+              class="task__done"
+              type="checkbox"
+              id="temp"
+              name="checkbox"
+            />
             <label class="task__content" name="label" for="temp"></label>
             <span class="delete task__delete" name="erase">&#x2715;</span>
           </div>

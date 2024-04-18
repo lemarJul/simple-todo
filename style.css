@@ -1,108 +1,174 @@
+/* Design system */
 :root {
+  /* color palette */
+  /* #DBCDF7 */
+  /* #CDF7D4 */
+  /* #faebd7 */
+  /* #367A47 */
   --color-white: white;
-  --color-bg: antiquewhite;
-  --border-radius: 10px;
-  --disabled-color: grey;
-  --stripe-color: black;
+  --color-black: black;
+  --color-primary: #faebd7;
+  --color-primary-grey: #a2998c;
+  --color-primary-dark: #a58964;
+  --color-secondary: #dbcdf7;
+  --color-secondary-grey: #958ca2;
+  --color-secondary-dark: #53367a;
+  --color-tertiary: #8fbc8f;
+  --color-tertiary-grey: #8ca291;
+  --color-tertiary-dark: #1c3f24;
+
+  /* Background */
+  --color-bg: var(--color-primary);
+  /* borders */
+  --border-radius: 0.625rem;
+  --border-color: var(--color-secondary);
+  --border-width: 0.0625rem;
+  /* shadows */
+  --shadow-offset-large: 0.9375rem;
+  --shadow-offset-small: 0.1875rem;
+  --shadow-color: var(--color-secondary-dark);
+  --inset-shadow: inset var(--shadow-offset-small) var(--shadow-offset-small)
+    var(--shadow-color);
+  /* font */
+  --title-font-size: 3rem;
+  --title-color: var(--color-primary);
+  --text-font-size: 1.5rem;
+  --text-color: var(--color-secondary-dark);
+  /* striped background */
+  --stripe-color: var(--color-secondary);
   --striped-background: linear-gradient(
     45deg,
-    transparent 49%,
+    transparent 48%,
     var(--stripe-color) 50%,
-    transparent 51%
+    transparent 52%
   );
 }
 
 body {
-  min-height: 100vh;
-  margin: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  min-height: 100vh;
+  padding-top: 100px;
+  margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: var(--text-color);
   background: var(--striped-background);
   background-color: var(--color-bg);
   background-size: 10px 10px;
 }
 
 .todo {
-  margin: 0 35px 0 25px;
   position: relative;
-  width: 400px;
-  padding: 0 35px 35px 35px;
-  border: 1px solid;
-  border-radius: var(--border-radius);
-  background-color: var(--color-white);
-  height: -moz-fit-content;
-  height: fit-content;
-  box-shadow: 15px 15px black;
-}
-.todo > * {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 35px;
+  width: 400px;
+  height: fit-content;
+  height: -moz-fit-content;
+  padding: 35px;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  margin-right: var(
+    --shadow-offset-large
+  ); /* to center the box with its shadow */
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-offset-large) var(--shadow-offset-large)
+    var(--shadow-color);
 }
+
 .todo__title {
-  color: antiquewhite;
-  font-size: xxx-large;
-  margin: 25px 0;
+  margin: 0;
+  font-size: var(--title-font-size);
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  -webkit-text-stroke: 1px black;
+  color: var(--color-primary);
+  -webkit-text-stroke: 1.5px var(--color-secondary-dark);
 }
+
+.todo__main {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
 .todo__input {
-  background-color: antiquewhite;
   height: 45px;
-  border: 1px solid black;
-  border-radius: var(--border-radius);
   padding: 0 0 3px 15px;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
   font-size: medium;
   font-family: inherit;
+  color: var(--text-color);
+  caret-color: var(--color-secondary-dark);
+  background-color: var(--color-primary);
 }
+
 .todo__input:hover,
 .todo__input:focus-visible {
   outline: none;
-  box-shadow: inset 3px 3px black;
+  box-shadow: var(--inset-shadow);
   padding: 3px 0 0 15px;
 }
-.todo__input:hover::-moz-placeholder,
-.todo__input:focus-visible::-moz-placeholder {
-  opacity: 0;
+.todo__input::placeholder {
+  color: var(--color-primary-grey);
 }
-.todo__input:hover::placeholder,
-.todo__input:focus-visible::placeholder {
-  opacity: 0;
+
+.todo__progress {
+  position: absolute;
+  right: 40px;
+  top: 200px;
+  margin-left: auto;
+  font-weight: bolder;
+  font-size: .75rem;
+  color: var(--color-dark);
 }
+.todo__progress:empty + .todo__list {
+  display: none;
+}
+
 .todo__list {
   background: var(--striped-background);
-  background-color: antiquewhite;
+  background-color: var(--color-bg);
   background-size: 10px 10px;
   background-repeat: repeat;
   border-radius: var(--border-radius);
 }
 .task {
   display: flex;
-  font-size: small;
-  gap: 10px;
-  padding: 15px;
   align-items: center;
-  accent-color: black;
-  border: 1px solid black;
-  border-width: 1px 1px 0 1px;
-  background-color: white;
+  gap: 15px;
+  padding: 0.9375rem;
+  border: var(--border-width) solid var(--border-color);
+  border-bottom-width: 0;
+  font-size: 0.875rem;
+  color: var(--text-color);
+  background-color: var(--color-white);
+  accent-color: var(--color-secondary-dark);
 }
 .task:first-child {
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
 }
 .task:last-child {
+  border-bottom-width: var(--border-width);
   border-bottom-right-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
-  border-bottom-width: 1px;
 }
 .task:has(.task__done:checked) {
-  mix-blend-mode: multiply;
+  mix-blend-mode: darken  ;
+}
+
+.task:hover {
+  box-shadow: var(--inset-shadow);
+  background-color: var(--color-bg);
+}
+.task:hover > * {
+  transform: translate(var(--shadow-offset-small), var(--shadow-offset-small));
+}
+.task:hover .task__delete {
+  opacity: 1;
 }
 .task__content {
   word-wrap: break-word;
@@ -119,29 +185,8 @@ body {
   opacity: 0;
   cursor: pointer;
 }
-.task:hover {
-  box-shadow: inset 3px 3px black;
-  background-color: antiquewhite;
-}
-.task:hover > * {
-  transform: translate(3px, 3px);
-}
-.task:hover .task__delete {
-  opacity: 1;
-}
 .task__delete:hover {
   cursor: pointer;
-  color: white;
-  background-color: black;
+  color: var(--color-primary);
+  background-color: var(--color-secondary-dark);
 }
-.todo__progress {
-  position: absolute;
-  right: 35px;
-  top: 35px;
-  margin-left: auto;
-  font-weight: bolder;
-  font-size: small;
-}
-.todo__progress:empty + #todoList {
-  display: none;
-} /*# sourceMappingURL=style.css.map */
