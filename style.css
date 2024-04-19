@@ -50,6 +50,7 @@ body {
   min-height: 100vh;
   padding-top: 100px;
   margin: 0;
+  box-sizing: border-box;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   color: var(--text-color);
@@ -58,7 +59,7 @@ body {
   background-size: 10px 10px;
 }
 
-.todo {
+.card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -77,7 +78,7 @@ body {
     var(--shadow-color);
 }
 
-.todo__title {
+.card__title {
   margin: 0;
   font-size: var(--title-font-size);
   text-align: center;
@@ -87,13 +88,13 @@ body {
   -webkit-text-stroke: 1.5px var(--color-secondary-dark);
 }
 
-.todo__main {
+.card__main {
   display: flex;
   flex-direction: column;
   gap: 50px;
 }
 
-.todo__input {
+.card__input {
   height: 45px;
   padding: 0 0 3px 15px;
   border: var(--border-width) solid var(--border-color);
@@ -105,37 +106,37 @@ body {
   background-color: var(--color-primary);
 }
 
-.todo__input:hover,
-.todo__input:focus-visible {
+.card__input:hover,
+.card__input:focus-visible {
   outline: none;
   box-shadow: var(--inset-shadow);
   padding: 3px 0 0 15px;
 }
-.todo__input::placeholder {
+.card__input::placeholder {
   color: var(--color-primary-grey);
 }
 
-.todo__progress {
+.card__progress {
   position: absolute;
   right: 40px;
   top: 200px;
   margin-left: auto;
   font-weight: bolder;
-  font-size: .75rem;
+  font-size: 0.75rem;
   color: var(--color-dark);
 }
-.todo__progress:empty + .todo__list {
+.card__progress:empty + .todo__list {
   display: none;
 }
 
-.todo__list {
+.card__list {
   background: var(--striped-background);
   background-color: var(--color-bg);
   background-size: 10px 10px;
   background-repeat: repeat;
   border-radius: var(--border-radius);
 }
-.task {
+.todo {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -147,34 +148,34 @@ body {
   background-color: var(--color-white);
   accent-color: var(--color-secondary-dark);
 }
-.task:first-child {
+.todo:first-child {
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
 }
-.task:last-child {
+.todo:last-child {
   border-bottom-width: var(--border-width);
   border-bottom-right-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
 }
-.task:has(.task__done:checked) {
-  mix-blend-mode: darken  ;
+.todo:has(.todo__finished:checked) {
+  mix-blend-mode: darken;
 }
 
-.task:hover {
+.todo:hover {
   box-shadow: var(--inset-shadow);
   background-color: var(--color-bg);
 }
-.task:hover > * {
+.todo:hover > * {
   transform: translate(var(--shadow-offset-small), var(--shadow-offset-small));
 }
-.task:hover .task__delete {
+.todo:hover .todo__delete {
   opacity: 1;
 }
-.task__content {
+.todo__content {
   word-wrap: break-word;
   flex-grow: 1;
 }
-.task__delete {
+.todo__delete {
   display: flex;
   height: 1.2em;
   aspect-ratio: 1/1;
@@ -185,7 +186,7 @@ body {
   opacity: 0;
   cursor: pointer;
 }
-.task__delete:hover {
+.todo__delete:hover {
   cursor: pointer;
   color: var(--color-primary);
   background-color: var(--color-secondary-dark);

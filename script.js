@@ -1,53 +1,62 @@
-const [form] = document.getElementsByTagName("form");
-form.addEventListener("submit", addTask);
+const form = document.getElementById("todoForm");
+const { todoInput, todoTemplate, todoList, todoProgress } = form.children;
 
-function addTask(e) {
+form.addEventListener("submit", function submitHandler(e) {
   e.preventDefault();
-  const taskContent = popInputValue(this.textInput);
+  const todoContent = todoInput.value.trim();
+  this.reset();
 
-  if (taskContent) {
-    const template = this.children.todoTemplate.content;
-    const todo = todoList.appendChild(template.children.todo.cloneNode(true));
-    const { label, checkbox } = todo.children;
-    const uniqueID = Date.now();
+  if (!todoContent) return;
+  const todo = Todo(todoContent);
+  todoList.appendChild(todo);
+  todoProgress.update();
+});
 
-    todo.addEventListener("click", todoClickHandler);
-    checkbox.setAttribute("id", uniqueID);
-    label.setAttribute("for", uniqueID);
-    label.innerText = taskContent;
+/**
+ * Creates a to-do element.
+ * @param {string} content - The content of the to-do.
+ * @param {number} id - The unique identifier for the to-do.
+ * @returns {DocumentFragment} - The cloned template fragment representing the to-do.
+ */
+function Todo(content, id = Date.now()) {
+  const fragment = todoTemplate.content.cloneNode(true);
+  const todo = fragment.firstElementChild;
+  const { label, deleteButton, checkbox } = todo.children;
 
-    updateProgress();
-  }
+  // attributes
+  checkbox.setAttribute("id", id);
+  label.setAttribute("for", id);
+  // escaped content
+  label.innerText = content;
+  // methods
+  todo.deleteSelf = () => todo.parentNode.removeChild(todo);
+  todo.toggleChecked = () => (checkbox.checked = !checkbox.checked);
+  // event listeners
+  todo.addEventListener("click", (event) => {
+    if (event.target === deleteButton) todo.deleteSelf();
+    else todo.toggleChecked(); // the whole to-do is clickable
+    todoProgress.update();
+  });
+  return fragment;
 }
 
-function popInputValue(input) {
-  const val = input.value.trim();
-  input.value = "";
-  return val;
-}
+/**
+ * Updates the progress text.
+ * @returns {void}
+ */
+todoProgress.update = () => {
+  const [checkedCount, todoCount] = getProgressionValues();
+  const formatted = todoCount ? [checkedCount, todoCount].join("/") : "";
+  todoProgress.innerText = formatted;
+};
 
-function updateProgress() {
-  let todoCount = document.querySelectorAll("input[type=checkbox]").length;
-  let checkedTodoCount = document.querySelectorAll(
-    "input[type=checkbox]:checked"
-  ).length;
-  const updated = checkedTodoCount + "/" + todoCount;
-  progress.innerText = updated == "0/0" ? "" : updated;
-}
-
-function todoClickHandler(event) {
-  console.log(event);
-  const { checkbox, erase } = this.children;
-
-  switch (event.target) {
-    case this:
-      // turn all the area of todos clickable to toggle check
-      checkbox.dispatchEvent(new PointerEvent("click"));
-      break;
-    case erase:
-      this.parentNode.removeChild(this);
-      break;
-    default:
-  }
-  updateProgress();
+/**
+ * Returns the number of checked to-dos and the total number of to-dos.
+ * @returns {[number,number]} - An array containing the number of checked to-dos and the total number of to-dos.
+ */
+function getProgressionValues() {
+  const todos = document.querySelectorAll("input[type=checkbox]");
+  const total = todos.length;
+  const checked = [...todos].filter((item) => item.checked).length;
+  return [checked, total];
 }
