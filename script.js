@@ -55,8 +55,7 @@ todoProgress.update = () => {
  * @returns {[number,number]} - An array containing the number of checked to-dos and the total number of to-dos.
  */
 function getProgressionValues() {
-  const todos = document.querySelectorAll("input[type=checkbox]");
-  const total = todos.length;
-  const checked = [...todos].filter((item) => item.checked).length;
-  return [checked, total];
+  const checkboxes = todoList.querySelectorAll("input[type=checkbox]");
+  const checkedOnes = [...checkboxes].filter((item) => item.checked);
+  return [checkedOnes, checkboxes].map((item) => item.length);
 }
