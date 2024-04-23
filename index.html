@@ -8,31 +8,24 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="todo">
-      <h1 class="todo__title">to do list</h1>
-      <form class="todo__main">
+    <div class="card">
+      <h1 class="card__title">to do list</h1>
+      <form id="todoForm" class="card__main">
         <input
-          class="todo__input"
+          class="card__input"
           type="text"
-          name="textInput"
-          placeholder="Your task here..."
+          name="todoInput"
+          placeholder="Your to-do here..."
         />
-
+        <span class="card__progress" name="todoProgress"></span>
+        <output class="card__list" name="todoList"> </output>
         <template name="todoTemplate">
-          <div class="task" name="todo">
-            <input
-              class="task__done"
-              type="checkbox"
-              id="temp"
-              name="checkbox"
-            />
-            <label class="task__content" name="label" for="temp"></label>
-            <span class="delete task__delete" name="erase">&#x2715;</span>
+          <div class="todo">
+            <input class="todo__finished" type="checkbox" name="checkbox" />
+            <label class="todo__content" name="label"></label>
+            <span class="todo__delete" name="deleteButton">&#x2715;</span>
           </div>
         </template>
-
-        <span id="progress" class="todo__progress" name="progress"></span>
-        <output id="todoList" class="todo__list" name="todoList"> </output>
       </form>
     </div>
   </body>
