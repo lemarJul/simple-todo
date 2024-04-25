@@ -3,13 +3,20 @@ const { todoInput, todoTemplate, todoList, todoProgress } = form.children;
 
 form.addEventListener("submit", function submitHandler(e) {
   e.preventDefault();
-  const todoContent = todoInput.value.trim();
+
+  if (todoContent()) {
+    todoList.appendChild(Todo(todoContent));
+    todoProgress.update();
+  }
   this.reset();
 
-  if (!todoContent) return;
-  const todo = Todo(todoContent);
-  todoList.appendChild(todo);
-  todoProgress.update();
+  /**
+   * Retrieves the trimmed value of the todoInput element from the event target.
+   * @returns {string} - The trimmed value of the todoInput element.
+   */
+  function todoContent() {
+    return e.target.value.trim();
+  }
 });
 
 /**
