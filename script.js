@@ -1,7 +1,7 @@
 import Todo from "./components/Todo.mjs";
 
 const form = document.getElementById("todoForm");
-const { todoInput, todoTemplate, todoList, todoProgress } = form.children;
+const { todoList, todoProgress } = form.children;
 
 form.addEventListener("submit", function submitHandler(e) {
   e.preventDefault();
