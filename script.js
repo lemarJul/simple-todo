@@ -1,14 +1,22 @@
+import Todo from "./components/Todo.mjs";
+
 const form = document.getElementById("todoForm");
 const { todoInput, todoTemplate, todoList, todoProgress } = form.children;
 
 form.addEventListener("submit", function submitHandler(e) {
   e.preventDefault();
-  console.log("submitHandler");
-  if (todoContent()) {
-    todoList.appendChild(Todo(todoContent()));
+  if (todoContent()) addTodo();
+  this.reset();
+
+  /**
+   * Adds a new todo item to the todo list.
+   */
+  function addTodo() {
+    todoList
+      .appendChild(Todo(todoContent()))
+      .addEventListener("click", todoProgress.update);
     todoProgress.update();
   }
-  this.reset();
 
   /**
    * Retrieves the trimmed value of the todoInput element from the event target.
@@ -18,34 +26,6 @@ form.addEventListener("submit", function submitHandler(e) {
     return e.target.todoInput.value.trim();
   }
 });
-
-/**
- * Creates a to-do element.
- * @param {string} content - The content of the to-do.
- * @param {number} id - The unique identifier for the to-do.
- * @returns {DocumentFragment} - The cloned template fragment representing the to-do.
- */
-function Todo(content, id = Date.now()) {
-  const fragment = todoTemplate.content.cloneNode(true);
-  const todo = fragment.firstElementChild;
-  const { label, deleteButton, checkbox } = todo.children;
-
-  // attributes
-  checkbox.setAttribute("id", id);
-  label.setAttribute("for", id);
-  // escaped content
-  label.innerText = content;
-  // methods
-  todo.deleteSelf = () => todo.parentNode.removeChild(todo);
-  todo.toggleChecked = () => (checkbox.checked = !checkbox.checked);
-  // event listeners
-  todo.addEventListener("click", (event) => {
-    if (event.target === deleteButton) todo.deleteSelf();
-    else todo.toggleChecked(); // the whole to-do is clickable
-    todoProgress.update();
-  });
-  return fragment;
-}
 
 /**
  * Updates the progress text.
