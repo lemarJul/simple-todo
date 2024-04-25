@@ -32,7 +32,7 @@ export default function Todo(content, id = Date.now(), isChecked = false) {
   // escaped content
   label.innerText = content;
   // methods
-  fragment.deleteSelf = () => fragment.parentNode.removeChild(todo);
+  fragment.deleteSelf = () => fragment.parentNode.removeChild(fragment);
   fragment.toggleChecked = () => (checkbox.checked = !checkbox.checked);
   // event listeners
   fragment.addEventListener("click", (event) => {
