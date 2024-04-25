@@ -5,27 +5,24 @@ const { todoList, todoProgress } = form.children;
 
 form.addEventListener("submit", function submitHandler(e) {
   e.preventDefault();
-  if (todoContent()) addTodo();
-  this.reset();
-
-  /**
-   * Adds a new todo item to the todo list.
-   */
-  function addTodo() {
-    todoList
-      .appendChild(Todo(todoContent()))
-      .addEventListener("click", () => todoProgress.update());
-    todoProgress.update();
-  }
+  if (todoContent()) todoList.createTodo(todoContent());
+  form.reset();
 
   /**
    * Retrieves the trimmed value of the todoInput element from the event target.
    * @returns {string} - The trimmed value of the todoInput element.
    */
   function todoContent() {
-    return e.target.todoInput.value.trim();
+    return form.todoInput.value.trim();
   }
 });
+
+todoList.createTodo = function createTodo(content, checked = false) {
+  this.appendChild(Todo(content, checked)).addEventListener("click", () =>
+    todoProgress.update()
+  );
+  todoProgress.update();
+};
 
 /**
  * Updates the progress text.
@@ -36,10 +33,6 @@ todoProgress.update = () => {
   todoProgress.innerText = total ? format(checked, total) : "";
 };
 
-function format(count, total) {
-  return `${count}/${total}`;
-}
-
 /**
  * Returns the number of checked checkboxes and the total checkboxes.
  * @param {HTMLElement} element - The element containing the checkboxes.
@@ -49,4 +42,8 @@ function countCheckboxProgression(element) {
   const checkboxes = element.querySelectorAll("input[type=checkbox]");
   const checkedOnes = [...checkboxes].filter((item) => item.checked);
   return [checkedOnes, checkboxes].map((item) => item.length);
+}
+
+function format(count, total) {
+  return `${count}/${total}`;
 }
