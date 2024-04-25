@@ -15,7 +15,7 @@ const template = `
  * @param {number} id - The unique identifier for the to-do.
  * @returns {DocumentFragment | null} - The cloned template fragment representing the to-do.
  */
-export default function Todo(content, id = Date.now(), isChecked = false) {
+export default function Todo(content, isChecked = false, id = Date.now()) {
   const fragment = parseTemplate(template);
   if (!fragment) {
     console.error(
