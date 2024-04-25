@@ -47,3 +47,7 @@ function countCheckboxProgression(element) {
 function format(count, total) {
   return `${count}/${total}`;
 }
+
+todoList.createTodo("Build a simple todo app", true);
+todoList.createTodo("Squeeze the lemon until it's dry");
+todoList.createTodo("Take a break");
