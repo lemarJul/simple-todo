@@ -1,4 +1,4 @@
-import { parseTemplate } from "./helper";
+import { parseTemplate } from "./helper.js";
 
 const template = `
   <div class="todo">
