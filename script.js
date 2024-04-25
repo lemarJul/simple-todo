@@ -14,7 +14,7 @@ form.addEventListener("submit", function submitHandler(e) {
   function addTodo() {
     todoList
       .appendChild(Todo(todoContent()))
-      .addEventListener("click", todoProgress.update);
+      .addEventListener("click", () => todoProgress.update());
     todoProgress.update();
   }
 
@@ -32,10 +32,13 @@ form.addEventListener("submit", function submitHandler(e) {
  * @returns {void}
  */
 todoProgress.update = () => {
-  const [checkedCount, todoCount] = countCheckboxProgression(todoList);
-  const formatted = todoCount ? [checkedCount, todoCount].join("/") : "";
-  todoProgress.innerText = formatted;
+  const [checked, total] = countCheckboxProgression(todoList);
+  todoProgress.innerText = total ? format(checked, total) : "";
 };
+
+function format(count, total) {
+  return `${count}/${total}`;
+}
 
 /**
  * Returns the number of checked checkboxes and the total checkboxes.
