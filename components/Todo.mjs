@@ -1,4 +1,4 @@
-import { parseTemplate } from "./helper.js";
+import { parseHTML } from "./helper.js";
 
 const template = `
   <div class="todo">
@@ -16,7 +16,7 @@ const template = `
  * @returns {DocumentFragment | null} - The cloned template fragment representing the to-do.
  */
 export default function Todo(content, isChecked = false, id = Date.now()) {
-  const fragment = parseTemplate(template);
+  const fragment = parseHTML(template);
   if (!fragment) {
     console.error(
       ` Couldn't create a to-do element with template: ${template}`
