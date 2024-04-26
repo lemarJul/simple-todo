@@ -1,11 +1,9 @@
 import TodoCard from "./components/TodoCard.mjs";
 
-const { todoList } = TodoCard(
-  document.getElementById("todoForm"),
-  document.getElementById("todoList"),
-  document.getElementById("todoProgress")
-);
+const todoCard = new TodoCard();
 
-todoList.createTodo("Build a simple todo app", true);
-todoList.createTodo("Squeeze the lemon until it's dry");
-todoList.createTodo("Take a break");
+todoCard.createTodo("Build a simple todo app", true);
+todoCard.createTodo("Squeeze the lemon until it's dry");
+todoCard.createTodo("Take a break");
+
+document.body.appendChild(todoCard);

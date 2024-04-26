@@ -1,25 +1,100 @@
 import Todo from "./Todo.mjs";
+import { parseHTML } from "./helper.js";
 
-export default function TodoCard(form, todoList, todoProgress) {
-  enrichProgress(todoProgress);
-  enrichList(todoList);
-  
-  form.addEventListener("submit", function submitHandler(e) {
-    e.preventDefault();
-    if (todoContent()) todoList.createTodo(todoContent());
-    form.reset();
+/**
+ * Represents a TodoCard component.
+ * @class
+ * @extends HTMLElement
+ *
+ */
+export default class TodoCard extends HTMLElement {
+  #template = parseHTML(`
+    <template class="card">
+      <h1 class="card__title">to do list</h1>
+      <form id="todoForm" class="card__main">
+        <input
+          class="card__input"
+          type="text"
+          name="todoInput"
+          placeholder="Your to-do here..."
+        />
+      </form>
+      <span id="todoProgress" class="card__progress" name="todoProgress"></span>
+      <div id="todoList" class="card__list" name="todoList"></div>
+    </template>`);
 
-    /**
-     * Retrieves the trimmed value of the todoInput element from the event target.
-     * @returns {string} - The trimmed value of the todoInput element.
-     */
-    function todoContent() {
-      return form.todoInput.value.trim();
-    }
-  });
+  /**
+   * Constructs a new instance of the TodoCard component.
+   * @constructor
+   * @returns {TodoCard} - A new instance of the TodoCard component.
+   */
+  constructor() {
+    super();
+    this.appendChild(this.#template.content);
+    this.classList = this.#template.classList;
 
-  return { form, todoList, todoProgress };
+    let { todoList, todoProgress, todoForm } = this.children;
+    this.list = enrichList(todoList);
+    this.progress = enrichProgress(todoProgress);
+    this.form = todoForm;
+
+    this.form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (this.#formValue()) this.createTodo(this.#formValue());
+      this.form.reset();
+    });
+  }
+
+  /**
+   *
+   * @param {string} content - The content of the todo.
+   * @param {boolean} checked - The status of the todo.
+   */
+  createTodo(content, checked = false) {
+    this.list.createTodo(content, checked).addEventListener("click", () => {
+      this.#updateProgress();
+    });
+    this.#updateProgress();
+  }
+
+
+  /**
+   * Retrieves the trimmed value of the todoInput element from the event target.
+   * @private
+   * @returns {string} - The trimmed value of the todoInput element.
+   */
+  #formValue() {
+    return this.form.todoInput.value.trim();
+  }
+
+  /**
+   * Updates the progress bar.
+   * @private
+   * @returns {void}
+   */
+  #updateProgress() {
+    this.progress.assess(this.list);
+  }
+
+  /**
+   * The tag name of the custom element.
+   * @static
+   * @returns {string} - The tag name of the custom element.
+   */
+  static get tag() {
+    return "todo-card";
+  }
+  /**
+   * Registers the custom element.
+   * @static
+   * @returns {void}
+   */
+  static registerOnes() {
+    if (customElements.get(this.tag)) return;
+    customElements.define(this.tag, this);
+  }
 }
+TodoCard.registerOnes();
 
 function enrichList(listElement) {
   return Object.assign(listElement, {
@@ -30,10 +105,7 @@ function enrichList(listElement) {
      * @returns {DocumentFragment} - The created todo element.
      */
     createTodo: function createTodo(content, checked = false) {
-      this.appendChild(new Todo(content, checked)).addEventListener("click", () =>
-        todoProgress.assess(todoList)
-      );
-      todoProgress.assess(todoList);
+      return this.appendChild(new Todo(content, checked));
     },
   });
 }
