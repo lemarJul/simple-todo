@@ -1,43 +1,45 @@
 import { parseHTML } from "./helper.js";
 
-const template = `
-  <div class="todo">
+export default class Todo extends HTMLElement {
+  #template = parseHTML(`
+  <template class="todo">
     <input class="todo__finished" type="checkbox" name="checkbox" />
     <label class="todo__content" name="label"></label>
     <span  class="todo__delete" name="deleteButton">&#x2715;</span>
-  </div>
-  `;
+  </template>
+  `);
 
-/**
- *
- * Creates a to-do element.
- * @param {string} content - The content of the to-do.
- * @param {number} id - The unique identifier for the to-do.
- * @returns {DocumentFragment | null} - The cloned template fragment representing the to-do.
- */
-export default function Todo(content, isChecked = false, id = Date.now()) {
-  const fragment = parseHTML(template);
-  if (!fragment) {
-    console.error(
-      ` Couldn't create a to-do element with template: ${template}`
-    );
-    return null;
+  constructor(content, isChecked = false, id = Date.now()) {
+    super();
+    this.appendChild(this.#template.content);
+    this.classList = this.#template.classList;
+
+    
+    const { label, checkbox } = this.children;
+    checkbox.checked = isChecked;
+    checkbox.setAttribute("id", id);
+    label.innerText = content;
+    label.setAttribute("for", id);
+
+    // Event listeners
+    this.addEventListener("click", (event) => {
+      if (event.target === this.children.deleteButton) this.deleteSelf();
+      else this.toggleChecked();
+    });
   }
-  const { label, deleteButton, checkbox } = fragment.children;
 
-  // attributes
-  checkbox.setAttribute("id", id);
-  checkbox.checked = isChecked;
-  label.setAttribute("for", id);
-  // escaped content
-  label.innerText = content;
-  // methods
-  fragment.deleteSelf = () => fragment.parentNode.removeChild(fragment);
-  fragment.toggleChecked = () => (checkbox.checked = !checkbox.checked);
-  // event listeners
-  fragment.addEventListener("click", (event) => {
-    if (event.target === deleteButton) fragment.deleteSelf();
-    else fragment.toggleChecked(); // the whole to-do is clickable
-  });
-  return fragment;
+  deleteSelf() {
+    this.parentNode.removeChild(this);
+  }
+  toggleChecked() {
+    this.children.checkbox.checked = !this.children.checkbox.checked;
+  }
+
+  static get tag() {
+    return "todo-item";
+  }
+  static registerOnce() {
+    customElements.define(this.tag, this);
+  }
 }
+Todo.registerOnce();

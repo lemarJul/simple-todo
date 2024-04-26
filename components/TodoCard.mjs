@@ -30,7 +30,7 @@ function enrichList(listElement) {
      * @returns {DocumentFragment} - The created todo element.
      */
     createTodo: function createTodo(content, checked = false) {
-      this.appendChild(Todo(content, checked)).addEventListener("click", () =>
+      this.appendChild(new Todo(content, checked)).addEventListener("click", () =>
         todoProgress.assess(todoList)
       );
       todoProgress.assess(todoList);
