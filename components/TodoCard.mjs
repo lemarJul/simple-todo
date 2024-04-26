@@ -2,7 +2,8 @@ import Todo from "./Todo.mjs";
 
 export default function TodoCard(form, todoList, todoProgress) {
   enrichProgress(todoProgress);
-
+  enrichList(todoList);
+  
   form.addEventListener("submit", function submitHandler(e) {
     e.preventDefault();
     if (todoContent()) todoList.createTodo(todoContent());
@@ -17,15 +18,25 @@ export default function TodoCard(form, todoList, todoProgress) {
     }
   });
 
-  todoList.createTodo = function createTodo(content, checked = false) {
-    this.appendChild(Todo(content, checked)).addEventListener("click", () =>
-      todoProgress.assess(todoList)
-    );
-    todoProgress.assess(todoList);
-  };
   return { form, todoList, todoProgress };
 }
 
+function enrichList(listElement) {
+  return Object.assign(listElement, {
+    /**
+     * Creates a todo element and appends it to the list.
+     * @param {string} content - The content of the todo.
+     * @param {boolean} checked - The status of the todo.
+     * @returns {DocumentFragment} - The created todo element.
+     */
+    createTodo: function createTodo(content, checked = false) {
+      this.appendChild(Todo(content, checked)).addEventListener("click", () =>
+        todoProgress.assess(todoList)
+      );
+      todoProgress.assess(todoList);
+    },
+  });
+}
 
 function enrichProgress(progressElement) {
   return Object.assign(progressElement, {
