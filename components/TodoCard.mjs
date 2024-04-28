@@ -11,16 +11,16 @@ export default class TodoCard extends HTMLElement {
   #template = parseHTML(`
     <template class="card">
       <h1 class="card__title">to do list</h1>
-      <form id="todoForm" class="card__main">
+      <form name="form" class="card__main">
         <input
           class="card__input"
           type="text"
-          name="todoInput"
+          name="textInput"
           placeholder="Your to-do here..."
         />
       </form>
-      <span id="todoProgress" class="card__progress" name="todoProgress"></span>
-      <div id="todoList" class="card__list" name="todoList"></div>
+      <span class="card__progress" name="progress"></span>
+      <div class="card__list" name="list"></div>
     </template>`);
 
   /**
@@ -33,14 +33,13 @@ export default class TodoCard extends HTMLElement {
     this.appendChild(this.#template.content);
     this.classList = this.#template.classList;
 
-    let { todoList, todoProgress, todoForm } = this.children;
-    this.list = enrichList(todoList);
-    this.progress = enrichProgress(todoProgress);
-    this.form = todoForm;
+    this.list = enrichList(this.children.list);
+    this.progress = enrichProgress(this.children.progress);
+    this.form = this.children.form;
 
     this.form.addEventListener("submit", (e) => {
       e.preventDefault();
-      if (this.#formValue()) this.createTodo(this.#formValue());
+      if (this.textInputValue()) this.createTodo(this.textInputValue());
       this.form.reset();
     });
   }
@@ -50,21 +49,20 @@ export default class TodoCard extends HTMLElement {
    * @param {string} content - The content of the todo.
    * @param {boolean} checked - The status of the todo.
    */
-  createTodo(content, checked = false) {
-    this.list.createTodo(content, checked).addEventListener("click", () => {
+  createTodo(content, checked, id) {
+    this.list.createTodo(content, checked, id).addEventListener("click", () => {
       this.#updateProgress();
     });
     this.#updateProgress();
   }
-
 
   /**
    * Retrieves the trimmed value of the todoInput element from the event target.
    * @private
    * @returns {string} - The trimmed value of the todoInput element.
    */
-  #formValue() {
-    return this.form.todoInput.value.trim();
+  textInputValue() {
+    return this.form.textInput.value.trim();
   }
 
   /**
@@ -104,8 +102,8 @@ function enrichList(listElement) {
      * @param {boolean} checked - The status of the todo.
      * @returns {DocumentFragment} - The created todo element.
      */
-    createTodo: function createTodo(content, checked = false) {
-      return this.appendChild(new Todo(content, checked));
+    createTodo: function createTodo(content, checked, id) {
+      return this.appendChild(new Todo(content, checked, id));
     },
   });
 }
