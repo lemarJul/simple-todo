@@ -28,7 +28,7 @@ export default class TodoCard extends HTMLElement {
    * @constructor
    * @returns {TodoCard} - A new instance of the TodoCard component.
    */
-  constructor() {
+  constructor(todoData = []) {
     super();
     this.appendChild(this.#template.content);
     this.classList = this.#template.classList;
@@ -42,6 +42,10 @@ export default class TodoCard extends HTMLElement {
       if (this.textInputValue()) this.createTodo(this.textInputValue());
       this.form.reset();
     });
+
+    todoData.forEach(({ content, checked, id }) =>
+      this.createTodo(content, checked, id)
+    );
   }
 
   /**

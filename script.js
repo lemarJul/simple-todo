@@ -1,9 +1,9 @@
 import TodoCard from "./components/TodoCard.mjs";
 
-const todoCard = new TodoCard();
+export const todoData = [
+  { content: "Build a simple todo app", checked: true, id: 1 },
+  { content: "Squeeze the lemon until it's dry", checked: false, id: 2 },
+  { content: "Take a break", checked: false, id: 3 },
+];
 
-todoCard.createTodo("Build a simple todo app", true);
-todoCard.createTodo("Squeeze the lemon until it's dry");
-todoCard.createTodo("Take a break");
-
-document.body.appendChild(todoCard);
+document.body.appendChild(new TodoCard(todoData));
